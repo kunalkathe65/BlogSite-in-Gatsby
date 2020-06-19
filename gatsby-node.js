@@ -1,18 +1,20 @@
 const path = require("path")
 
-module.exports.onCreateNode = ({ node, actions }) => {
-  const { createNodeField } = actions
+//Following method is required in md file because we need to create 'slug' in CMS it is not required
 
-  if (node.internal.type === "MarkdownRemark") {
-    const slug = path.basename(node.fileAbsolutePath, ".md")
+// module.exports.onCreateNode = ({ node, actions }) => {
+//   const { createNodeField } = actions
 
-    createNodeField({
-      node,
-      name: "slug",
-      value: slug,
-    })
-  }
-}
+//   if (node.internal.type === "MarkdownRemark") {
+//     const slug = path.basename(node.fileAbsolutePath, ".md")
+
+//     createNodeField({
+//       node,
+//       name: "slug",
+//       value: slug,
+//     })
+//   }
+// }
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
@@ -20,25 +22,23 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const res = await graphql(`
     query {
-      allMarkdownRemark {
+      allContentfulBlogPost(sort: { fields: publishedDate, order: DESC }) {
         edges {
           node {
-            fields {
-              slug
-            }
+            slug
           }
         }
       }
     }
   `)
   // Create blog post pages.
-  res.data.allMarkdownRemark.edges.forEach(edge => {
+  res.data.allContentfulBlogPost.edges.forEach(edge => {
     createPage({
-      path: `/blog/${edge.node.fields.slug}`, //how we want our link
+      path: `/blog/${edge.node.slug}`, //how we want our link
       component: blogPostTemplate, //template or component we want to use
       context: {
         //variable or context for graphql query
-        slug: edge.node.fields.slug,
+        slug: edge.node.slug,
       },
     })
   })

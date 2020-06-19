@@ -1,9 +1,20 @@
+require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
     title: "Kunal Kathe",
     author: "Kunal Kathe",
   },
   plugins: [
+    "gatsby-plugin-react-helmet",
+    {
+      resolve: "gatsby-source-contentful",
+      options: {
+        spaceId: process.env.SPACE_ID,
+        accessToken: process.env.API_ACCESS_TOKEN,
+        host: process.env.CONTENTFUL_HOST || "cdn.contentful.com",
+      },
+    },
     "gatsby-plugin-sass",
     {
       resolve: "gatsby-source-filesystem",
