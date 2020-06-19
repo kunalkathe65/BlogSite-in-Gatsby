@@ -1,0 +1,19 @@
+.link {
+  margin: 0;
+  list-style-type: none;
+
+  li {
+    padding: 1rem;
+    background: #eaf0f1;
+  }
+  p {
+    font-style: italic;
+    color: #586776;
+  }
+  h3 {
+    letter-spacing: 0.2rem;
+  }
+  li:hover {
+    background: #dae0e2;
+  }
+}
